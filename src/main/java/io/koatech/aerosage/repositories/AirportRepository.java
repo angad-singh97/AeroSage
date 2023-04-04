@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AirportRepository extends MongoRepository<Airport, String> {
-    Airport findByAirportCode(String airportCode);
+    Airport findByIata(String iata);
+    Airport findByIcao(String icao);
 }

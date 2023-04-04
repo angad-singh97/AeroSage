@@ -5,8 +5,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
-@Document(collection = "flights")
-public class Flight {
+@Document(collection = "routes")
+public class Route {
     @Id
     private String id;
 
@@ -24,10 +24,10 @@ public class Flight {
 
     private String status;
 
-    public Flight() {}
+    public Route() {}
 
-    public Flight(String flightNumber, String airlineCode, String departureAirportCode,
-                  String arrivalAirportCode, Date departureTime, Date arrivalTime, String status) {
+    public Route(String flightNumber, String airlineCode, String departureAirportCode,
+                 String arrivalAirportCode, Date departureTime, Date arrivalTime, String status) {
         this.flightNumber = flightNumber;
         this.airlineCode = airlineCode;
         this.departureAirportCode = departureAirportCode;

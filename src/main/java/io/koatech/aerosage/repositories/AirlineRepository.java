@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AirlineRepository extends MongoRepository<Airline, String> {
-    Airline findByAirlineCode(String airlineCode);
+//    Airline findByAirlineCode(String airlineCode);
 }

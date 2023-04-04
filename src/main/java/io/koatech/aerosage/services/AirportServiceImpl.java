@@ -24,11 +24,11 @@ public class AirportServiceImpl implements AirportService{
     @Override
     public Airport getAirportByIataCode(String iataCode) {
         // Check if airport exists in database
-        Optional<Airport> optionalAirport = airportRepository.findById(iataCode);
+        Optional<Airport> optionalAirport = Optional.ofNullable(airportRepository.findByIata(iataCode));
 
         if (optionalAirport.isPresent()) {
             // Airport exists in database, return it
-            System.out.println("found in DB: ICAO Code - " + iataCode);
+            System.out.println("found in DB: IATA Code - " + iataCode);
             return optionalAirport.get();
         } else {
             // Airport doesn't exist in database, fetch from API and save to database
@@ -36,15 +36,15 @@ public class AirportServiceImpl implements AirportService{
             AirportInfo airportInfo = airportInfoAPI.getAirportInfo(iataCode);
 
             Airport airport = new Airport();
-            airport.setAirportName(airportInfo.getName());
-            airport.setAirportCode(airportInfo.getIcaoCode());
+            airport.setName(airportInfo.getName());
+            airport.setIata(airportInfo.getIataCode());
+            airport.setIcao(airportInfo.getIcaoCode());
             airport.setCity(airportInfo.getCity());
             airport.setCountry(airportInfo.getCountry());
-            airport.setId(airportInfo.getIataCode());
             // ...
 
             // Save airport to database
-            airportRepository.save(airport);
+//            airportRepository.save(airport);
 
             return airport;
         }
