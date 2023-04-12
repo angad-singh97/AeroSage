@@ -12,4 +12,6 @@ public interface AirportService {
 
     Airport getAirportByIataCode(String iataCode);
 
+    List<Airport> searchAirports(String searchTerm);
+
 }

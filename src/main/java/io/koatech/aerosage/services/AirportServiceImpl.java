@@ -6,9 +6,12 @@ import io.koatech.aerosage.apis.models.AirportInfo;
 import io.koatech.aerosage.models.Airport;
 import io.koatech.aerosage.repositories.AirportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AirportServiceImpl implements AirportService{
@@ -49,6 +52,20 @@ public class AirportServiceImpl implements AirportService{
             return airport;
         }
     }
+
+    @Override
+    public List<Airport> searchAirports(String searchTerm) {
+        System.out.println("Received Search Term:" + searchTerm);
+        List<Airport> allAirports = airportRepository.findAll();
+        return allAirports.stream()
+                .filter(airport -> airport.getName().toLowerCase().contains(searchTerm.toLowerCase()) ||
+                        airport.getCity().toLowerCase().contains(searchTerm.toLowerCase()) ||
+                        airport.getIcao().toLowerCase().contains(searchTerm.toLowerCase()) ||
+                        airport.getIata().toLowerCase().contains(searchTerm.toLowerCase()) ||
+                        airport.getCountry().toLowerCase().contains(searchTerm.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
 
     // Other methods for CRUD operations on airports
     // ...

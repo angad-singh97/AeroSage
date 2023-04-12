@@ -1,6 +1,7 @@
 package io.koatech.aerosage.models;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -30,14 +31,19 @@ public class Airport {
     @Field("Airport ID")
     private String airportID;
     @Field("Name")
+    @TextIndexed
     private String name;
     @Field("IATA")
+    @TextIndexed
     private String iata;
     @Field("ICAO")
+    @TextIndexed
     private String icao;
     @Field("City")
+    @TextIndexed
     private String city;
     @Field("Country")
+    @TextIndexed
     private String country;
     @Field("Latitude")
     private String latitude;
