@@ -8,7 +8,8 @@ import java.util.List;
 
 @Repository
 public interface RouteRepository extends MongoRepository<Route, String> {
-    List<Route> findByAirlineCode(String airlineCode);
-    List<Route> findByDepartureAirportCode(String airportCode);
-    List<Route> findByArrivalAirportCode(String airportCode);
+    List<Route> findByAirline(String airline);
+    List<Route> findBySrcAirportId(String srcAirportId);
+    List<Route> findByDestAirportId(String destAirportId);
+    List<Route> findBySrcAirportIdAndDestAirportId(String srcAirportId, String destAirportId);
 }

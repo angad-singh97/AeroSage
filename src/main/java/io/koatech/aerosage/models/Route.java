@@ -1,43 +1,65 @@
 package io.koatech.aerosage.models;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 
 @Document(collection = "routes")
 public class Route {
+
+    /*
+    * {
+      "_id": {
+        "$oid": "642c46409ad37fd1f89b323e"
+      },
+      "Airline": "2B",
+      "Airline ID": "410",
+      "Source airport": "ASF",
+      "Source airport ID": "2966",
+      "Destination airport": "KZN",
+      "Destination airport ID": "2990",
+      "Codeshare": "",
+      "Stops": "0",
+      "Equipment": "CR2"
+    }*/
+
     @Id
+    @Field("_id")
     private String id;
+    @Field("Airline")
+    private String airline;
+    @Field("Airline ID")
+    private String airlineId;
+    @Field("Source airport")
+    private String srcAirport;
+    @Field("Source airport ID")
+    private String srcAirportId;
+    @Field("Destination airport")
+    private String destAirport;
+    @Field("Destination airport ID")
+    private String destAirportId;
+    @Field("Codeshare")
+    private String codeshare;
+    @Field("Stops")
+    private String stops;
+    @Field("Equipment")
+    private String equipment;
 
-    private String flightNumber;
-
-    private String airlineCode;
-
-    private String departureAirportCode;
-
-    private String arrivalAirportCode;
-
-    private Date departureTime;
-
-    private Date arrivalTime;
-
-    private String status;
-
-    public Route() {}
-
-    public Route(String flightNumber, String airlineCode, String departureAirportCode,
-                 String arrivalAirportCode, Date departureTime, Date arrivalTime, String status) {
-        this.flightNumber = flightNumber;
-        this.airlineCode = airlineCode;
-        this.departureAirportCode = departureAirportCode;
-        this.arrivalAirportCode = arrivalAirportCode;
-        this.departureTime = departureTime;
-        this.arrivalTime = arrivalTime;
-        this.status = status;
+    public Route(String id, String airline, String airlineId, String srcAirport, String srcAirportId, String destAirport, String destAirportId, String codeshare, String stops, String equipment) {
+        this.id = id;
+        this.airline = airline;
+        this.airlineId = airlineId;
+        this.srcAirport = srcAirport;
+        this.srcAirportId = srcAirportId;
+        this.destAirport = destAirport;
+        this.destAirportId = destAirportId;
+        this.codeshare = codeshare;
+        this.stops = stops;
+        this.equipment = equipment;
     }
-
-    // Getters and setters
 
     public String getId() {
         return id;
@@ -47,59 +69,75 @@ public class Route {
         this.id = id;
     }
 
-    public String getFlightNumber() {
-        return flightNumber;
+    public String getAirline() {
+        return airline;
     }
 
-    public void setFlightNumber(String flightNumber) {
-        this.flightNumber = flightNumber;
+    public void setAirline(String airline) {
+        this.airline = airline;
     }
 
-    public String getAirlineCode() {
-        return airlineCode;
+    public String getAirlineId() {
+        return airlineId;
     }
 
-    public void setAirlineCode(String airlineCode) {
-        this.airlineCode = airlineCode;
+    public void setAirlineId(String airlineId) {
+        this.airlineId = airlineId;
     }
 
-    public String getDepartureAirportCode() {
-        return departureAirportCode;
+    public String getSrcAirport() {
+        return srcAirport;
     }
 
-    public void setDepartureAirportCode(String departureAirportCode) {
-        this.departureAirportCode = departureAirportCode;
+    public void setSrcAirport(String srcAirport) {
+        this.srcAirport = srcAirport;
     }
 
-    public String getArrivalAirportCode() {
-        return arrivalAirportCode;
+    public String getSrcAirportId() {
+        return srcAirportId;
     }
 
-    public void setArrivalAirportCode(String arrivalAirportCode) {
-        this.arrivalAirportCode = arrivalAirportCode;
+    public void setSrcAirportId(String srcAirportId) {
+        this.srcAirportId = srcAirportId;
     }
 
-    public Date getDepartureTime() {
-        return departureTime;
+    public String getDestAirport() {
+        return destAirport;
     }
 
-    public void setDepartureTime(Date departureTime) {
-        this.departureTime = departureTime;
+    public void setDestAirport(String destAirport) {
+        this.destAirport = destAirport;
     }
 
-    public Date getArrivalTime() {
-        return arrivalTime;
+    public String getDestAirportId() {
+        return destAirportId;
     }
 
-    public void setArrivalTime(Date arrivalTime) {
-        this.arrivalTime = arrivalTime;
+    public void setDestAirportId(String destAirportId) {
+        this.destAirportId = destAirportId;
     }
 
-    public String getStatus() {
-        return status;
+    public String getCodeshare() {
+        return codeshare;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setCodeshare(String codeshare) {
+        this.codeshare = codeshare;
+    }
+
+    public String getStops() {
+        return stops;
+    }
+
+    public void setStops(String stops) {
+        this.stops = stops;
+    }
+
+    public String getEquipment() {
+        return equipment;
+    }
+
+    public void setEquipment(String equipment) {
+        this.equipment = equipment;
     }
 }
