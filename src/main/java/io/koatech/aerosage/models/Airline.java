@@ -25,6 +25,9 @@ public class Airline {
     @Id
     @Field("_id")
     private String id;
+
+    @Field("Name")
+    private String airlineName;
     @Field("Airline ID")
     private String airlineID;
 
@@ -44,9 +47,10 @@ public class Airline {
 
     public Airline() {}
 
-    public Airline(String id, String airlineID, String alias, String iata, String icao, String callsign, String country, String active) {
+    public Airline(String id, String airlineName, String airlineID, String alias, String iata, String icao, String callsign, String country, String active) {
         this.id = id;
         this.airlineID = airlineID;
+        this.airlineName = airlineName;
         this.alias = alias;
         this.iata = iata;
         this.icao = icao;
@@ -57,6 +61,14 @@ public class Airline {
 
     // Getters and setters
 
+
+    public String getAirlineName() {
+        return airlineName;
+    }
+
+    public void setAirlineName(String airlineName) {
+        this.airlineName = airlineName;
+    }
 
     public String getId() {
         return id;

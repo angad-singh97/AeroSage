@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan({"io.koatech.aerosage.services", "io.koatech.aerosage.controllers", "io.koatech.aerosage.repositories", "io.koatech.aerosage.models"})
+@ComponentScan({"io.koatech.aerosage.services", "io.koatech.aerosage.controllers", "io.koatech.aerosage.repositories", "io.koatech.aerosage.models", "io.koatech.aerosage.beans"})
 public class AeroSageApplication {
 
     public static void main(String[] args) {
