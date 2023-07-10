@@ -62,6 +62,7 @@ public class AirportServiceImpl implements AirportService{
                         airport.getCity().toLowerCase().contains(searchTerm.toLowerCase()) ||
                         airport.getIcao().toLowerCase().contains(searchTerm.toLowerCase()) ||
                         airport.getIata().toLowerCase().contains(searchTerm.toLowerCase()) ||
+                        airport.getAirportID().toLowerCase().contains(searchTerm.toLowerCase()) ||
                         airport.getCountry().toLowerCase().contains(searchTerm.toLowerCase()))
                 .collect(Collectors.toList());
     }

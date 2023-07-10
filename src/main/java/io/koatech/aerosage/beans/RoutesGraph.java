@@ -11,8 +11,6 @@ import io.koatech.aerosage.repositories.AirlineRepository;
 import io.koatech.aerosage.repositories.AirportRepository;
 import io.koatech.aerosage.repositories.RouteRepository;
 import org.apache.commons.math3.util.FastMath;
-import org.jgrapht.GraphPath;
-import org.jgrapht.graph.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -185,45 +183,54 @@ public class RoutesGraph {
         List<WeightedPath> topXPaths = getTopXPaths(src, dest, maxStops, resultsCount);
         //now iterate and create RouteResponse for each possible route
         for (WeightedPath eachPath: topXPaths) {
-            List<RouteResponse.RouteStop> routeStopList = getRouteStops(dest, eachPath);
-            RouteResponse routeResponse = new RouteResponse(Integer.toString(src), airportMap.get(src).getName(), Integer.toString(dest), airportMap.get(dest).getName(), routeStopList);
+            RouteResponse.RouteStops routeStopList = getRouteStops(eachPath);
+            RouteResponse routeResponse = new RouteResponse(Integer.toString(src), airportMap.get(src).getName(), Integer.toString(dest), airportMap.get(dest).getName(), eachPath.getTotalWeight(), eachPath.getTimeTaken(), routeStopList);
             result.add(routeResponse);
         }
         //return result
         return result;
     }
 
-    private List<RouteResponse.RouteStop> getRouteStops(int dest, WeightedPath eachPath) {
+    private RouteResponse.RouteStops getRouteStops(WeightedPath eachPath) {
         List<RouteResponse.RouteStop> routeStopList = new ArrayList<>();
         List<WeightedEdge> path = eachPath.getPath();
         for (WeightedEdge edge: path) {
+            int source = edge.getSource();
             int destination = edge.getDestination();
             String airlineId = Integer.toString(edge.getAirlineCode());
             String airlineName = airlineMap.get(edge.getAirlineCode()).getAirlineName();
-            RouteResponse.RouteStop routeStop = new RouteResponse.RouteStop(Integer.toString(destination), airportMap.get(destination).getName(), airlineId, airlineName);
+            RouteResponse.RouteStop routeStop = new RouteResponse.RouteStop(Integer.toString(source), airportMap.get(source).getName(),Integer.toString(destination), airportMap.get(destination).getName(), airlineId, airlineName);
             routeStopList.add(routeStop);
         }
-        return routeStopList;
+        return new RouteResponse.RouteStops(routeStopList);
     }
 
     private List<WeightedPath> getTopXPaths(int src, int dest, int maxStops, int resultsCount) {
         List<WeightedPath> weightedPathList = new ArrayList<>();
-        System.out.println("DFS Started");
-        recursiveDFS(src, maxStops, new HashSet<>(), new WeightedPath(src, dest),weightedPathList);
-        System.out.println("DFS Completed");
+//        System.out.println("DFS Started");
+        Airport srcAirport = airportMap.get(src);
+        Airport destAirport = airportMap.get(dest);
+
+        double offsetDist = calcHaversine((Double.parseDouble(srcAirport.getLatitude())), (Double.parseDouble(srcAirport.getLongitude())), (Double.parseDouble(destAirport.getLatitude())), (Double.parseDouble(destAirport.getLongitude())));
+        double cutoffDist = (offsetDist*1.05);
+        if (offsetDist <= 2500) {
+            cutoffDist = offsetDist*1.5;
+        }
+        recursiveDFS(src, maxStops, new HashSet<>(), new WeightedPath(src, dest),weightedPathList, cutoffDist);
+//        System.out.println("DFS Completed");
         //sort the received results by distance - ascending
-        System.out.println("Sorting..");
+//        System.out.println("Sorting..");
         Collections.sort(weightedPathList);
         //pick {resultsCount} number of results
-        System.out.println("Filtering..");
+//        System.out.println("Filtering..");
         List<WeightedPath> topXPaths = weightedPathList.stream()
                 .limit(resultsCount)
                 .collect(Collectors.toList());
         return topXPaths;
     }
 
-    public void recursiveDFS(int current, int k, Set<Integer> visitedNodes, WeightedPath currentPath, List<WeightedPath>  allPathsFoundSoFar) {
-        if (currentPath.size() + 1 > k + 1 || visitedNodes.contains(current)) {
+    public void recursiveDFS(int current, int k, Set<Integer> visitedNodes, WeightedPath currentPath, List<WeightedPath>  allPathsFoundSoFar, double cutoffDist) {
+        if (cutoffDist != -1 && currentPath.getTotalWeight() >= cutoffDist || currentPath.size() + 1 > k + 1 || visitedNodes.contains(current)) {
             return;
         }
         if (current == currentPath.getDestAirport()) {
@@ -232,10 +239,10 @@ public class RoutesGraph {
                 System.out.print("From: " + c.getSource() + ", To: " + c.getDestination() + ", Weight: " + c.getWeight());
             }
             System.out.println("\n\n");*/
-            if (currentPath.size() + 1 > 2) {
-                allPathsFoundSoFar.add(new WeightedPath(currentPath));
-                System.out.println("Route Found: " + allPathsFoundSoFar.size());
-            }
+//            if (currentPath.size() + 1 > 2) {
+//                System.out.println("Route Found: " + allPathsFoundSoFar.size());
+//            }
+            allPathsFoundSoFar.add(new WeightedPath(currentPath));
             return;
         }
         visitedNodes.add(current);
@@ -245,7 +252,7 @@ public class RoutesGraph {
             if (!visitedNodes.contains(neighborDestination)) {
                 currentPath.addEdge(edge);
                 currentPath.addWeight(edgeWeight);
-                recursiveDFS(neighborDestination, k, visitedNodes, currentPath, allPathsFoundSoFar);
+                recursiveDFS(neighborDestination, k, visitedNodes, currentPath, allPathsFoundSoFar, cutoffDist);
                 currentPath.removeWeight(edgeWeight);
                 currentPath.removeLastEdge();
             }
@@ -261,6 +268,8 @@ public class RoutesGraph {
 
         private int destAirport;
 
+        private double timeTaken;
+
         public WeightedPath() {
         }
 
@@ -269,6 +278,7 @@ public class RoutesGraph {
             destAirport = otherPath.getDestAirport();
             path.addAll(otherPath.getPath());
             totalWeight = otherPath.getTotalWeight();
+            timeTaken = totalWeight/875.5;
         }
 
         public int size() {
@@ -309,6 +319,10 @@ public class RoutesGraph {
 
         public int getDestAirport() {
             return destAirport;
+        }
+
+        public double getTimeTaken() {
+            return timeTaken;
         }
 
         @Override

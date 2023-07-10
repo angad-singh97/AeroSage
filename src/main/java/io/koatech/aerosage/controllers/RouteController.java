@@ -20,9 +20,9 @@ public class RouteController {
     @Autowired
     private RouteService routeService;
 
-    @GetMapping("/search/{srcAirportCode}/{destAirportCode}")
-    public ResponseEntity<List<RouteResponse>> getAirportsByQueryString(@PathVariable String srcAirportCode, @PathVariable String destAirportCode) {
-        List<RouteResponse> airportList = routeService.searchFlights(srcAirportCode, destAirportCode);
+    @GetMapping("/search/{srcAirportCode}/{destAirportCode}/{maxStops}")
+    public ResponseEntity<List<RouteResponse>> getAirportsByQueryString(@PathVariable String srcAirportCode, @PathVariable String destAirportCode, @PathVariable int maxStops) {
+        List<RouteResponse> airportList = routeService.searchFlights(srcAirportCode, destAirportCode, maxStops);
         return ResponseEntity.ok().body(airportList);
     }
 

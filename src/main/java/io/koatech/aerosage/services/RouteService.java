@@ -8,7 +8,7 @@ import java.util.List;
 public interface RouteService {
 //    List<Flight> getAllFlights();
 //    Flight getFlightById(long id);
-    List<RouteResponse> searchFlights(String sourceAirportCode, String destinationAirportCode);
+    List<RouteResponse> searchFlights(String sourceAirportCode, String destinationAirportCode, int maxStops);
 //    List<Flight> getFlightsByAirline(String airlineCode);
 //    List<Flight> getFlightsByAirport(String airportCode);
 //    Flight saveFlight(Flight flight);
