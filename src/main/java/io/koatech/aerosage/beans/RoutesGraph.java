@@ -230,7 +230,8 @@ public class RoutesGraph {
     }
 
     public void recursiveDFS(int current, int k, Set<Integer> visitedNodes, WeightedPath currentPath, List<WeightedPath>  allPathsFoundSoFar, double cutoffDist) {
-        if (cutoffDist != -1 && currentPath.getTotalWeight() >= cutoffDist || currentPath.size() + 1 > k + 1 || visitedNodes.contains(current)) {
+//        if (cutoffDist != -1 && currentPath.getTotalWeight() >= cutoffDist || currentPath.size() + 1 > k + 1 || visitedNodes.contains(current)) {
+        if (currentPath.size() + 1 > k + 1 || visitedNodes.contains(current)) {
             return;
         }
         if (current == currentPath.getDestAirport()) {
