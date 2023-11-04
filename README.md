@@ -1,7 +1,7 @@
 # AeroSage
 Backend system for AeroSage flight search engine, powered by Java, Spring Boot and MongoDB.
 
-**Overview: **
+**Overview:**
 This standalone project serves as the back-end module of the AeroSage web-application, that is a part of the two-part Full-Stack project in Java and React.
 
 Built using Java, Spring Boot, and MongoDB, this component provides the model, and controller for the flight search, airport repository, blogpost and user review features. It makes use of Spring Boot's repository annotations to minimize boilerplate code for DB connectivity and basic CRUD calls to the database.
